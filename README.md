@@ -1,54 +1,32 @@
-\# 6-DOF Flight Dynamics Simulator
+# 6-DOF Flight Dynamics & Control Engine
 
+A modular, 6-Degree-of-Freedom (6-DOF) rigid-body flight dynamics simulation suite built in Python, featuring coupled lateral-directional dynamics, atmospheric modeling, and active PID closed-loop flight control.
 
+## Overview
 
-A 6-Degree-of-Freedom (6-DOF) rigid-body flight dynamics engine built in Python for numerical physics modeling and aerodynamic stability analysis.
+This simulator models a fixed-wing aircraft in mid-air cruise conditions. It solves non-linear 12-state translational and rotational equations of motion using standard aerodynamic derivatives and dynamic atmospheric properties, allowing analysis of longitudinal (Phugoid, Short Period) and lateral-directional flight modes (Dutch Roll, Roll Subsidence, Spiral Mode).
 
+## Key Features
 
+* **Atmospheric Physics Engine:** Implements the 1976 US Standard Atmosphere model to compute altitude-dependent air density, pressure, and speed of sound.
+* **Full 12-State Kinematics:** Tracks spatial position $(x, y, z)$, body velocities $(u, v, w)$, Euler attitude angles $(\phi, \theta, \psi)$, and angular body rates $(p, q, r)$.
+* **Coupled 6-DOF Flight Dynamics:** Accurately models cross-coupling between roll, pitch, and yaw, including dihedral effects, weathercocking, and adverse yaw.
+* **Discrete PID Flight Control:** Features an active closed-loop Yaw Damper to eliminate high-frequency Dutch Roll oscillations and restore lateral stability.
+* **Multi-Axis Visualization Suite:** Renders multi-panel dashboards for Euler angles, body angular rates, aerodynamic angles $(\alpha, \beta)$, and 3D flight trajectories.
 
-\## Project Overview
+## Repository Architecture
 
-
-
-This simulator models a fixed-wing aircraft flying at mid-air cruise conditions. It solves non-linear translational and rotational equations of motion using standard aerodynamic derivatives and dynamic atmospheric properties, allowing observation of coupled longitudinal flight modes.
-
-
-
-\## Key Features
-
-
-
-\* \*\*Atmospheric Physics Engine:\*\* Models the 1976 US Standard Atmosphere to compute altitude-dependent air density, pressure, and speed of sound.
-
-\* \*\*12-State Kinematics:\*\* Tracks position $(x, y, z)$, body velocities $(u, v, w)$, Euler angles $(\\phi, \\theta, \\psi)$, and angular body rates $(p, q, r)$.
-
-\* \*\*4th-Order RK4 Integrator:\*\* Employs Runge-Kutta numerical integration (`RK4`) to evaluate differential equations with high accuracy and zero drift.
-
-\* \*\*Flight Stability Analysis:\*\* Simulates elevator doublet control inputs to excite and plot high-frequency Short Period and long-period Phugoid oscillations.
-
-
-
-\## Project Architecture
-
-
-
-\* `flight\_dynamics.py` – Core physics engine containing atmospheric models, baseline aircraft geometry, force/moment calculations, and the RK4 step solver.
-
-\* `sim.py` – Simulation runner managing initial state vectors, elevator control inputs, and 60-second trajectory state logging.
-
-\* `plot\_results.py` – Multi-axis plotting engine utilizing Matplotlib to visualize attitude, altitude, airspeed, and angular pitch rates.
-
-
-
-\## Installation \& Requirements
-
-
-
-Ensure you have Python installed, then install the required dependencies:
-
-
-
-```bash
-
-pip install numpy matplotlib
+```text
+6dof-flight-dynamics/
+├── core/
+│   ├── atmosphere.py       # 1976 US Standard Atmosphere model
+│   ├── aircraft.py         # Geometry, mass, and 6-DOF stability derivatives
+│   ├── integrator.py       # 4th-Order Runge-Kutta (RK4) solver
+│   └── control.py          # Discrete PID controller with anti-windup
+├── models/
+│   └── flight_dynamics.py  # 12-state non-linear equations of motion
+├── visualization/
+│   └── plot_results.py     # Multi-panel time series & 3D trajectory plotting
+├── sim.py                  # Closed-loop simulation runner
+└── README.md
 
